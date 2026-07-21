@@ -1,10 +1,10 @@
 name: Monitor citas Ayuntamiento
 
-on:
+'on':
 
   schedule:
     # Cada 5 minutos
-    - cron: "*/5 * * * *"
+    - cron: "* * * * *"
 
   # Permite lanzarlo manualmente
   workflow_dispatch:
