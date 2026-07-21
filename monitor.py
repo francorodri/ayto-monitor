@@ -162,9 +162,9 @@ def enviar_ntfy(mensaje):
             f"https://ntfy.sh/{NTFY_TOPIC}",
             data=mensaje.encode("utf-8"),
             headers={
-                "Title": "🟢 Citas disponibles",
+                "Title": "Citas disponibles",
                 "Priority": "5",
-                "Tags": "calendar"
+                "Tags": "calendar,white_check_mark"
             },
             timeout=10
         )
