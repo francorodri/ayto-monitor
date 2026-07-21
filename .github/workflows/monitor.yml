@@ -1,37 +1,64 @@
-name: Monitor citas
+name: Monitor citas Ayuntamiento
 
 on:
+
   schedule:
+    # Cada 5 minutos
     - cron: "*/5 * * * *"
+
+  # Permite lanzarlo manualmente
   workflow_dispatch:
+
 
 permissions:
   contents: write
 
+
 jobs:
-  comprobar:
+
+  monitor:
+
     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+    steps:
+
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - run: pip install -r requirements.txt
 
-      - run: python monitor.py
+      - name: Instalar dependencias
+        run: |
+          pip install -r requirements.txt
+
+
+      - name: Ejecutar monitor
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: |
+          python monitor.py
+
 
       - name: Guardar estado
         run: |
+
           git config user.name "github-actions"
+
           git config user.email "github-actions@github.com"
 
           git add estado.json
 
-          git diff --cached --quiet || git commit -m "Actualizar estado"
 
-          git push
+          if ! git diff --cached --quiet; then
+
+            git commit -m "Actualizar estado"
+
+            git push
+
+          fi
