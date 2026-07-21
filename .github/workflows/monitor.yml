@@ -5,6 +5,8 @@ on:
   schedule:
     # Cada 5 minutos
     - cron: '*/5 * * * *'
+    # Backup: cada hora (por si la anterior falla)
+    - cron: '0 * * * *'
 
   # Permite lanzarlo manualmente
   workflow_dispatch:
@@ -12,6 +14,10 @@ on:
 
 permissions:
   contents: write
+
+concurrency:
+  group: monitor-job
+  cancel-in-progress: false
 
 
 jobs:
@@ -43,6 +49,8 @@ jobs:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: |
           python monitor.py
+        continue-on-error: true
+        timeout-minutes: 5
 
 
       - name: Guardar estado
