@@ -46,17 +46,17 @@ $NTFY_TOPIC = "mi-topic-real"
 Abre PowerShell como administrador y ejecuta:
 
 ```powershell
-$scriptPath = "C:\dv\Dev\Personal\ayto-monitor\monitor.ps1"
+$scriptPath = "C:\dv\Dev\ayto-monitor\monitor.ps1"
 
 $action = New-ScheduledTaskAction `
     -Execute "powershell.exe" `
-    -Argument "-NonInteractive -ExecutionPolicy Bypass -File `"$scriptPath`""
+    -Argument "-NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$scriptPath`""
 
-# Repetir cada 10 minutos indefinidamente
+# Repetir cada 5 minutos indefinidamente
 $trigger = New-ScheduledTaskTrigger `
     -Once `
     -At (Get-Date) `
-    -RepetitionInterval (New-TimeSpan -Minutes 10)
+    -RepetitionInterval (New-TimeSpan -Minutes 5)
 
 $settings = New-ScheduledTaskSettingsSet `
     -ExecutionTimeLimit (New-TimeSpan -Minutes 2) `
