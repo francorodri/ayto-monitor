@@ -202,21 +202,42 @@ def main():
 
         fechas = consultar(servicio)
 
-        tiene_citas = len(fechas) > 0
+        estado_actual[servicio["id"]] = fechas
 
-        estado_actual[servicio["id"]] = tiene_citas
+        if fechas:
+
+            fechas_formateadas = ", ".join(
+                formatear_fecha(f) for f in fechas
+            )
+
+            logging.info(
+                "%s – fechas disponibles: %s",
+                servicio["centro"],
+                fechas_formateadas
+            )
 
 
-        # Avisamos solamente cuando aparece algo nuevo
-        if tiene_citas and not estado_anterior.get(
+        # Avisamos solo por fechas que no estaban antes
+        fechas_anteriores = estado_anterior.get(
             servicio["id"],
-            False
-        ):
+            []
+        )
+
+        # Compatibilidad con estado antiguo (booleano)
+        if not isinstance(fechas_anteriores, list):
+            fechas_anteriores = []
+
+        fechas_nuevas = [
+            f for f in fechas
+            if f not in fechas_anteriores
+        ]
+
+        if fechas_nuevas:
 
             texto_fechas = "\n".join(
                 [
                     f"• {formatear_fecha(f)}"
-                    for f in fechas
+                    for f in fechas_nuevas
                 ]
             )
 
@@ -227,7 +248,7 @@ def main():
                         f"📍 {servicio['centro']}",
                         f"📝 {servicio['nombre']}",
                         "",
-                        "📅 Fechas:",
+                        "📅 Fechas nuevas:",
                         texto_fechas,
                         "",
                         f"🔗 {servicio['enlace']}"
