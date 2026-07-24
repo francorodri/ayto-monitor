@@ -44,6 +44,7 @@ $SERVICIOS = @(
 $SCRIPT_DIR  = $PSScriptRoot
 $ESTADO_FILE = Join-Path $SCRIPT_DIR "estado.json"
 $LOG_FILE    = Join-Path $SCRIPT_DIR "monitor.log"
+$MAX_LOG_LINES = 1000
 
 # -----------------------------
 # Configuración ntfy
@@ -66,6 +67,29 @@ function Write-Log {
     $line = "$timestamp | $Level | $Message"
     Add-Content -Path $LOG_FILE -Value $line -Encoding UTF8
     Write-Host $line
+}
+
+function Trim-LogFile {
+    param(
+        [string]$Path,
+        [int]$MaxLines = 1000
+    )
+
+    if (-not (Test-Path $Path)) {
+        return
+    }
+
+    try {
+        $lines = @(Get-Content -Path $Path -Encoding UTF8)
+        if ($lines.Count -gt $MaxLines) {
+            $lines = $lines | Select-Object -Last $MaxLines
+            $lines | Set-Content -Path $Path -Encoding UTF8
+            Write-Host "Log recortado a las últimas $MaxLines líneas"
+        }
+    }
+    catch {
+        Write-Host "No se pudo recortar el log: $_"
+    }
 }
 
 # -----------------------------
@@ -167,6 +191,8 @@ function Send-Ntfy {
 # -----------------------------
 # Programa principal
 # -----------------------------
+
+Trim-LogFile -Path $LOG_FILE -MaxLines $MAX_LOG_LINES
 
 $estadoAnterior = Get-Estado
 $estadoActual   = @{}
