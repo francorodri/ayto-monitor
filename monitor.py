@@ -106,8 +106,9 @@ def consultar(servicio):
     try:
 
         logging.info(
-            "Consultando %s",
-            servicio["nombre"]
+            "Consultando %s - %s",
+            servicio["nombre"],
+            servicio["centro"],
         )
 
         respuesta = requests.get(
