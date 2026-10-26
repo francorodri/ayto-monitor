@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Monitor de citas del Ayuntamiento de Fuenlabrada.
@@ -33,6 +33,34 @@ $SERVICIOS = @(
         nombre  = "Padrón (Altas, Cambios, Modif, Renovación)"
         centro  = "JMD Vivero"
         url     = "https://citaprevia.ayto-fuenlabrada.es/qsige.localizador/citaPrevia/disponible/centro/4/servicio/1/calendario"
+        enlace  = "https://citaprevia.ayto-fuenlabrada.es/citaprevia/#/es/home?uuid=0242a-85e2-064a3-a1eb"
+    },
+    @{
+        id      = "padron_jmd_naranjo"
+        nombre  = "Padrón (Altas, Cambios, Modif, Renovación)"
+        centro  = "JMD NARANJO"
+        url     = "https://citaprevia.ayto-fuenlabrada.es/qsige.localizador/citaPrevia/disponible/centro/5/servicio/1/calendario"
+        enlace  = "https://citaprevia.ayto-fuenlabrada.es/citaprevia/#/es/home?uuid=0242a-85e2-064a3-a1eb"
+    },
+    @{
+        id      = "padron_jmd_arroyo"
+        nombre  = "Padrón (Altas, Cambios, Modif, Renovación)"
+        centro  = "JMD ARROYO"
+        url     = "https://citaprevia.ayto-fuenlabrada.es/qsige.localizador/citaPrevia/disponible/centro/6/servicio/1/calendario"
+        enlace  = "https://citaprevia.ayto-fuenlabrada.es/citaprevia/#/es/home?uuid=0242a-85e2-064a3-a1eb"
+    },
+    @{
+        id      = "padron_jmd_avanzada"
+        nombre  = "Padrón (Altas, Cambios, Modif, Renovación)"
+        centro  = "JMD AVANZADA"
+        url     = "https://citaprevia.ayto-fuenlabrada.es/qsige.localizador/citaPrevia/disponible/centro/7/servicio/1/calendario"
+        enlace  = "https://citaprevia.ayto-fuenlabrada.es/citaprevia/#/es/home?uuid=0242a-85e2-064a3-a1eb"
+    },
+    @{
+        id      = "padron_jmd_miraflores"
+        nombre  = "Padrón (Altas, Cambios, Modif, Renovación)"
+        centro  = "JMD MIRAFLORES"
+        url     = "https://citaprevia.ayto-fuenlabrada.es/qsige.localizador/citaPrevia/disponible/centro/8/servicio/1/calendario"
         enlace  = "https://citaprevia.ayto-fuenlabrada.es/citaprevia/#/es/home?uuid=0242a-85e2-064a3-a1eb"
     }
 )
@@ -121,7 +149,7 @@ function Format-Fecha {
 function Invoke-Servicio {
     param([hashtable]$Servicio)
 
-    Write-Log "Consultando $($Servicio.nombre) – $($Servicio.centro)"
+    Write-Log "Consultando $($Servicio.nombre) - $($Servicio.centro)"
 
     try {
         $respuesta = Invoke-RestMethod -Uri $Servicio.url -Method Get -TimeoutSec 20 -ErrorAction Stop
@@ -180,7 +208,7 @@ foreach ($servicio in $SERVICIOS) {
 
     if ($fechas.Count -gt 0) {
         $fechasFormateadas = ($fechas | ForEach-Object { Format-Fecha $_ }) -join ", "
-        Write-Log "$($servicio.centro) – fechas disponibles: $fechasFormateadas"
+        Write-Log "$($servicio.centro) - fechas disponibles: $fechasFormateadas"
     }
 
     # Fechas que no estaban en la ejecución anterior

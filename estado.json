@@ -1,5 +1,23 @@
-{
-  "padron_ayto": [],
-  "padron_jmd_loranca": [],
-  "padron_jmd_vivero": []
+﻿{
+    "padron_jmd_vivero":  {
+
+                          },
+    "padron_jmd_naranjo":  {
+
+                           },
+    "padron_jmd_miraflores":  {
+
+                              },
+    "padron_jmd_arroyo":  {
+
+                          },
+    "padron_jmd_avanzada":  {
+
+                            },
+    "padron_jmd_loranca":  {
+
+                           },
+    "padron_ayto":  {
+
+                    }
 }
