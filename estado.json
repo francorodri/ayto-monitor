@@ -1,6 +1,10 @@
 {
-  "padron_ayto": [],
-  "padron_jmd_loranca": [],
+  "padron_ayto": [
+    "2026-10-28"
+  ],
+  "padron_jmd_loranca": [
+    "2026-10-27"
+  ],
   "padron_jmd_vivero": [],
   "padron_jmd_naranjo": [],
   "padron_jmd_arroyo": [],
